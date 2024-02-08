@@ -1,5 +1,5 @@
+/* Given two binary strings a and b, return their sum as a binary string. */
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 #define STRING_LENGTH 8 * sizeof(int)
@@ -8,15 +8,20 @@ char* addBinary(char *a, char *b) {
 	int i = strtol(a, NULL, 2);
 	int j = strtol(b, NULL, 2);
 	int sum = i + j;
-	char *bitstring = (char*)malloc(STRING_LENGTH);
-	bitstring += STRING_LENGTH;
+	char *bitstring = calloc(STRING_LENGTH, sizeof(char));
+	char *head, *tail;
+	head = tail = bitstring;
 	while (sum > 0) {
 		char bit = (sum & 1) ? '1' : '0';
-		*bitstring = bit;
+		*(tail++) = bit;
 		sum >>= 1;
-		bitstring--;
 	}
-	return ++bitstring;	
+	while (head < --tail) { 
+		char temp = *head; 
+		*(head++) = *tail; 
+		*tail = temp; 
+	} 	
+	return bitstring;	
 }
 
 int main(int argc, char *argv[]) {
